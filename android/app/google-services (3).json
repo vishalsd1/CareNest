@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "43190006428",
+    "project_id": "babynytrition",
+    "storage_bucket": "babynytrition.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43190006428:android:f2e2051716c9cdb37d7359",
+        "android_client_info": {
+          "package_name": "com.carenest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHFSrLrLdrHqQlsphSl6RDBJP3bbAU2BE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

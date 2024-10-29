@@ -1,117 +1,122 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+// import { enableScreens } from 'react-native-screens';
+// enableScreens();
+import SignInScreen from './screens/SignInScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import Prest from './screens/parentScreen';
+import App123 from './screens/App123';
+import sett from './screens/accountset';
+import babypr from './screens/babyprof';
+import recipe from './screens/RecipeDetailScreen';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const Stack = createStackNavigator();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>
+          Welcome to <Text style={styles.highlightedText}>CareNest</Text>
+        </Text>
+        <Text style={styles.subtitle}>
+          where your child's well-being meets peace of mind.
+        </Text>
+      </View>
+      <Image source={require('./assets/baby-moon.png')} style={styles.babyImage} />
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          style={styles.button}       
+          onPress={() => navigation.navigate('SignIn')}
+        >
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Register')}
+        >
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
-}
+};
 
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Parent" component={Prest} />
+      <Stack.Screen name="App123" component={App123} />
+         <Stack.Screen name="sett" component={sett} />
+           <Stack.Screen name="babypr" component={babypr} />
+       <Stack.Screen name="recipe" component={recipe} />
+
+        {/* Add screens back one-by-one */}
+      </Stack.Navigator>   
+    </NavigationContainer>
+  );
+};
+ 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: '#FFF3D6',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  header: {
+    alignItems: 'center',
+    marginBottom: 20,
   },
-  sectionDescription: {
-    marginTop: 8,
+  title: {
+    fontSize: 28,
+    fontFamily: 'serif',
+    color: '#4C3B28',
+  },
+  highlightedText: {
+    color: '#C17848',
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#4C3B28',
+    textAlign: 'center',
+    marginTop: 5,
+  },
+  babyImage: {
+    width: 250,
+    height: 250,
+    resizeMode: 'contain',
+    marginVertical: 20,
+  },
+  buttonsContainer: {
+    width: '100%',
+    paddingHorizontal: 40,
+    marginTop: 20,
+  },
+  button: {
+    backgroundColor: '#F4B15E',
+    paddingVertical: 15,
+    borderRadius: 30,
+    marginBottom: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  buttonText: {
+    color: '#FFF',
     fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+    fontWeight: 'bold',
   },
 });
 

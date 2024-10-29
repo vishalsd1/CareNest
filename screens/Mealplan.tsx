@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 const MealPlanScreen = () => {
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Meal Plan</Text>
@@ -13,22 +13,27 @@ const MealPlanScreen = () => {
       <View style={styles.foodCoverage}>
         <Text style={styles.foodCoverageTitle}>Today's Food Coverage:</Text>
         <View style={styles.foodIcons}>
-          <Text style={styles.foodIcon}>🍎 Fruit</Text>
-          <Text style={styles.foodIcon}>🌾 Grains</Text>
-          <Text style={styles.foodIcon}>🍇 Pulses</Text>
-          <Text style={styles.foodIcon}>🍆 Veg</Text>
-          <Text style={styles.foodIcon}>🥛 Dairy</Text>
+          {['🍎 Fruit', '🌾 Grains', '🍇 Pulses', '🍆 Veg', '🥛 Dairy'].map((item, index) => (
+            <Text key={index} style={styles.foodIcon}>{item}</Text>
+          ))}
         </View>
       </View>
 
       {/* Meal Sections */}
       {['Breakfast', 'Lunch', 'Dinner'].map((meal, index) => (
-        <View key={index} style={[styles.mealSection, { backgroundColor: index === 1 ? '#C2F8F3' : index === 2 ? '#C9DDBA' : '#FDE8CE' }]}>
+        <View
+          key={index}
+          style={[
+            styles.mealSection,
+            { backgroundColor: index === 0 ? '#FDE8CE' : index === 1 ? '#C2F8F3' : '#C9DDBA' },
+          ]}
+        >
           <Text style={styles.mealTitle}>🍞 {meal}</Text>
           <View style={styles.mealCard}>
             <Image
               source={{ uri: 'https://example.com/appam.jpg' }} // Replace with actual image URL
               style={styles.mealImage}
+              resizeMode="cover"
             />
             <View style={styles.mealInfo}>
               <Text style={styles.mealName}>Appam</Text>
@@ -55,15 +60,15 @@ const MealPlanScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#F4F6F8',
-    paddingHorizontal: 10,
+    paddingHorizontal: 16,
     paddingVertical: 20,
   },
   header: {
@@ -74,47 +79,58 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 30, // Increased size for better visibility
     fontWeight: 'bold',
-    color: 'white',
+    color: '#FFFFFF',
   },
   foodCoverage: {
     backgroundColor: '#C8E6C9',
     borderRadius: 20,
     padding: 15,
     marginBottom: 20,
+    elevation: 3, // Slightly stronger shadow
   },
   foodCoverageTitle: {
-    fontSize: 18,
+    fontSize: 22, // Increased font size for title
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#333333',
   },
   foodIcons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
   },
   foodIcon: {
-    fontSize: 16,
+    fontSize: 18,
+    color: '#333333',
+    margin: 5,
+    backgroundColor: '#FFFFFF', // Added background for better contrast
+    borderRadius: 10,
+    padding: 5,
   },
   mealSection: {
     borderRadius: 20,
     padding: 15,
     marginBottom: 15,
+    elevation: 3, // Slightly stronger shadow
   },
   mealTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#333333',
   },
   mealCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFE0',
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 15,
+    elevation: 1,
   },
   mealImage: {
-    width: 70,
-    height: 70,
+    width: 80,
+    height: 80,
     borderRadius: 15,
     marginRight: 10,
   },
@@ -122,8 +138,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mealName: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#333333',
   },
   mealDescription: {
     fontSize: 14,
@@ -140,11 +157,14 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     marginTop: 20,
+    elevation: 3,
+    marginBottom:60,
   },
   questionText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#333333',
   },
   questionButtons: {
     flexDirection: 'row',
@@ -152,19 +172,20 @@ const styles = StyleSheet.create({
   },
   yesButton: {
     backgroundColor: '#F9B7B5',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
     borderRadius: 20,
   },
   noButton: {
     backgroundColor: '#C4FFC1',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
     borderRadius: 20,
   },
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#333333',
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,31 +8,59 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native';
 
 const SignInScreen = () => {
-  // State variables for email and password
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  // Get navigation object
   const navigation = useNavigation();
 
-  // Handle Sign In action
-  const handleSignIn = () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter your email and password.");
-      return;
-    }
-    
-    // Implement your sign-in logic here (e.g., API call)
+  // Email validation (simple regex)
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
-    Alert.alert("Success", "You have signed in successfully!", [
-      {
-        text: "OK",
-        onPress: () => navigation.navigate('app'), // Navigate to App123 screen
-      },
-    ]);
+  // Password validation (minimum 6 characters)
+  const validatePassword = (password) => {
+    return password.length >= 6;
+  };
+
+  useEffect(() => {
+    if (!email) {
+      setEmailError('Email is required');
+    } else if (!validateEmail(email)) {
+      setEmailError('Invalid email format');
+    } else {
+      setEmailError('');
+    }
+
+    if (!password) {
+      setPasswordError('Password is required');
+    } else if (!validatePassword(password)) {
+      setPasswordError('Password must be at least 6 characters');
+    } else {
+      setPasswordError('');
+    }
+
+    setIsFormValid(!emailError && !passwordError && email && password);
+  }, [email, password, emailError, passwordError]);
+
+  // Handle sign-in with success alert
+  const handleSignIn = () => {
+    if (isFormValid) {
+      // Display success alert
+      Alert.alert('Success', 'Sign In Successful!', [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('App123'), // Navigate to the next screen (replace 'App123' with your desired screen)
+        },
+      ]);
+    }
   };
 
   return (
@@ -50,9 +78,11 @@ const SignInScreen = () => {
           style={styles.input}
           placeholder="Email"
           placeholderTextColor="#B0A18C"
-          value={email} // Controlled input
-          onChangeText={setEmail} // Update email state on change
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
         />
+        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
       </View>
 
       {/* Password Input */}
@@ -62,13 +92,18 @@ const SignInScreen = () => {
           placeholder="Password"
           placeholderTextColor="#B0A18C"
           secureTextEntry={true}
-          value={password} // Controlled input
-          onChangeText={setPassword} // Update password state on change
+          value={password}
+          onChangeText={setPassword}
         />
+        {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
       </View>
 
       {/* Sign In Button */}
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: isFormValid ? '#F4B15E' : '#d3d3d3' }]}
+        onPress={handleSignIn}
+        disabled={!isFormValid}
+      >
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
 
@@ -77,7 +112,7 @@ const SignInScreen = () => {
         New User?{' '}
         <Text
           style={styles.linkText}
-          onPress={() => navigation.navigate('Register')} // Navigate to Register screen
+          onPress={() => navigation.navigate('Register')}
         >
           Create Your Account!
         </Text>
@@ -125,8 +160,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
+  },
   button: {
-    backgroundColor: '#F4B15E',
     paddingVertical: 15,
     borderRadius: 30,
     width: '100%',
@@ -149,7 +188,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   linkText: {
-    color: '#C17848', // Color for the link
+    color: '#C17848',
     fontWeight: 'bold',
   },
 });
